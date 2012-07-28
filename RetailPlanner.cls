@@ -37,7 +37,7 @@ public class RetailPlanner {
                 endDate = Datetime.newInstanceGmt(year,1,1);
             }
             
-            // Query every promotional event from previous year, clone all fields (except goal_amount), and increment the year, then insert
+            // Query every promotional event from previous year, clone all fields (except actual_amount__c), and increment the year, then insert
             for (Promotional_Event__c event : [SELECT name, account__c, promotional_campaign__c, event_size__c, goal_amount__c, type__c,
                 startdatetime__c, enddatetime__c FROM promotional_event__c WHERE startdatetime__c >= :startDate AND enddatetime__c < :endDate]) {
                 Promotional_Event__c clonedEvent = event.clone(false, true);
