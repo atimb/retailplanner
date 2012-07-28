@@ -13,8 +13,6 @@ public class RetailPlanner {
      * @return        A boolean indicating the success of cloning
      */
     public static Boolean cloneSession(Integer year, Integer half) {
-        System.debug('Cloning session for ' + half + 'H' + year + ' from historical records from ' + half + 'H' + (year-1));
-        
         // setup the save point for rollback
         Savepoint sp = Database.setSavepoint();
         
@@ -26,6 +24,8 @@ public class RetailPlanner {
                 half = 1;
                 year++;
             }
+            
+            System.debug('Cloning session for ' + half + 'H' + year + ' from historical records from ' + half + 'H' + (year-1));
             
             // Calculate start and end dates for previous year's planning session
             Datetime startDate, endDate;
@@ -46,10 +46,13 @@ public class RetailPlanner {
                 insert clonedEvent;
             }
         
+            System.debug('Cloning success');
+            
         } catch (Exception e){
              // roll everything back in case of error
             Database.rollback(sp);
             ApexPages.addMessages(e);
+            System.debug('Cloning failed: ' + e);
             return false;
         }
         
